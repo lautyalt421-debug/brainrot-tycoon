@@ -1,0 +1,73 @@
+:root {
+    --primary: #00ffcc;
+    --danger: #ff3366;
+    --bg: #0a0a0a;
+    --panel: #151515;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+    margin: 0; background: var(--bg); color: white;
+    font-family: 'Segoe UI', sans-serif; height: 100vh; overflow: hidden;
+}
+
+#app { display: flex; flex-direction: column; height: 100%; }
+
+#hud {
+    height: 15%; background: #000; display: flex;
+    justify-content: space-around; align-items: center;
+    border-bottom: 2px solid var(--primary); font-weight: bold;
+}
+
+#admin_timer {
+    background: var(--danger); color: white; padding: 5px 10px;
+    border-radius: 5px; animation: blink 0.5s infinite;
+}
+
+#offers_area {
+    height: 180px; position: relative; background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid #222; overflow: hidden;
+}
+
+.offer-card {
+    position: absolute; width: 220px; height: 150px;
+    background: var(--panel); border: 3px solid #333;
+    border-radius: 16px; padding: 10px; text-align: center;
+    display: flex; flex-direction: column; justify-content: space-around;
+}
+
+.offer-card.waiting {
+    border-color: var(--primary);
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+    animation: pulse 1s infinite alternate;
+}
+
+/* RAREZAS ANIMADAS */
+.rarity-rainbow {
+    background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+    background-size: 400% 400%; animation: rainbow_move 3s linear infinite;
+}
+
+#inventory_area { flex: 1; padding: 10px; overflow-x: auto; }
+#inventory_list { display: flex; gap: 10px; }
+
+.inv-item {
+    min-width: 110px; height: 110px; background: #222;
+    border-radius: 12px; border: 2px solid #444;
+    text-align: center; padding: 5px; font-size: 0.8rem;
+}
+
+#controls { height: 70px; display: flex; gap: 10px; padding: 10px; background: #000; }
+
+button {
+    flex: 1; border: none; border-radius: 8px; font-weight: bold;
+    background: #333; color: white; cursor: pointer; font-size: 1rem;
+}
+
+button:active { transform: scale(0.95); }
+.hidden { display: none; }
+
+@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
+@keyframes rainbow_move { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+@keyframes blink { 50% { opacity: 0; } }
