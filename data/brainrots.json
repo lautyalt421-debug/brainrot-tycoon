@@ -1,0 +1,18 @@
+{
+  "brainrots": [
+    { "id": "joaco", "name": "Joaco kaly", "price": 50, "gps": 1, "probability": 75, "sound": "joaco_kaly_buy.wav" },
+    { "id": "aguirre", "name": "Aguirrrrrre", "price": 125, "gps": 2, "probability": 90, "sound": "aguirrrrrre_buy.wav" },
+    { "id": "franquito", "name": "Franquito", "price": 500, "gps": 50, "probability": 45, "sound": "franquito_buy.wav" },
+    { "id": "gogieri", "name": "Gogieri", "price": 1700, "gps": 250, "probability": 42, "sound": "gogieri_buy.wav" },
+    { "id": "sofia", "name": "Sofia agustina", "price": 7000, "gps": 750, "probability": 20, "sound": "sofia_agustina_buy.wav" },
+    { "id": "donatello", "name": "Donatello", "price": 7500, "gps": 500, "probability": 15, "sound": "donatello_buy.wav" },
+    { "id": "cassandra", "name": "Cassaandra", "price": 20000, "gps": 1000, "probability": 18, "sound": "cassaandra_buy.wav" },
+    { "id": "basileus", "name": "Basileus", "price": 12500, "gps": 750, "probability": 6, "sound": "basileus_buy.wav" },
+    { "id": "lucarda", "name": "Lucarda", "price": 25000, "gps": 1250, "probability": 4, "sound": "lucarda_buy.wav" },
+    { "id": "queso", "name": "Lavar Queso", "price": 2000, "gps": 67, "probability": 45, "sound": "anda_a_lavar_queso_buy.wav" },
+    { "id": "volver", "name": "Vamos a volver", "price": 45000, "gps": 1000, "probability": 3, "sound": "vamos_a_volver_buy.wav" },
+    { "id": "desastroso", "name": "Tipo desastroso", "price": 25000, "gps": 5000, "probability": 12, "sound": "que_tipo_desastroso_buy.wav" },
+    { "id": "paubluchi", "name": "Paubluchi coconuchi", "price": 100000, "gps": 100000, "probability": 0.8, "sound": "paubluchi_coconuchi_buy.wav" },
+    { "id": "nikalacahsca", "name": "Nikalacahsca", "price": 60000000, "gps": 67000000, "probability": 0.07, "sound": "nikalacahsca_buy.wav" }
+  ]
+}
