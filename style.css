@@ -1,73 +1,106 @@
-:root {
-    --primary: #00ffcc;
-    --danger: #ff3366;
-    --bg: #0a0a0a;
-    --panel: #151515;
+/* Configuración General para que parezca una App */
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* Quita el cuadro azul al tocar */
 }
-
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
-    margin: 0; background: var(--bg); color: white;
-    font-family: 'Segoe UI', sans-serif; height: 100vh; overflow: hidden;
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #1a1a1a;
+    color: white;
+    overflow: hidden; /* Evita scroll de toda la pantalla */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    user-select: none; /* Nadie puede copiar texto por error */
+    touch-action: manipulation; /* Optimiza toques rápidos */
 }
 
-#app { display: flex; flex-direction: column; height: 100%; }
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
 
+/* HUD superior */
 #hud {
-    height: 15%; background: #000; display: flex;
-    justify-content: space-around; align-items: center;
-    border-bottom: 2px solid var(--primary); font-weight: bold;
+    background: #2a2a2a;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas para que quepa bien en el celu */
+    gap: 5px;
+    border-bottom: 2px solid #444;
+    font-size: 14px;
 }
 
-#admin_timer {
-    background: var(--danger); color: white; padding: 5px 10px;
-    border-radius: 5px; animation: blink 0.5s infinite;
+.stat {
+    font-weight: bold;
+    color: #00ff00;
+}
+
+/* Áreas de juego con scroll interno */
+#offers_area, #inventory_area {
+    flex: 1;
+    overflow-y: auto; /* Permite scroll solo en estas áreas */
+    padding: 15px;
+    -webkit-overflow-scrolling: touch; /* Scroll suave en iPhone */
 }
 
 #offers_area {
-    height: 180px; position: relative; background: rgba(255,255,255,0.03);
-    border-bottom: 1px solid #222; overflow: hidden;
+    border-bottom: 1px solid #333;
+    background-color: #222;
 }
 
-.offer-card {
-    position: absolute; width: 220px; height: 150px;
-    background: var(--panel); border: 3px solid #333;
-    border-radius: 16px; padding: 10px; text-align: center;
-    display: flex; flex-direction: column; justify-content: space-around;
+/* Estilo de las "cards" de personajes */
+.card {
+    background: #333;
+    border: 2px solid #555;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.offer-card.waiting {
-    border-color: var(--primary);
-    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
-    animation: pulse 1s infinite alternate;
+/* Botones gigantes para el pulgar */
+#controls {
+    padding: 15px;
+    background: #2a2a2a;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
-
-/* RAREZAS ANIMADAS */
-.rarity-rainbow {
-    background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
-    background-size: 400% 400%; animation: rainbow_move 3s linear infinite;
-}
-
-#inventory_area { flex: 1; padding: 10px; overflow-x: auto; }
-#inventory_list { display: flex; gap: 10px; }
-
-.inv-item {
-    min-width: 110px; height: 110px; background: #222;
-    border-radius: 12px; border: 2px solid #444;
-    text-align: center; padding: 5px; font-size: 0.8rem;
-}
-
-#controls { height: 70px; display: flex; gap: 10px; padding: 10px; background: #000; }
 
 button {
-    flex: 1; border: none; border-radius: 8px; font-weight: bold;
-    background: #333; color: white; cursor: pointer; font-size: 1rem;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.1s;
 }
 
-button:active { transform: scale(0.95); }
-.hidden { display: none; }
+button:active {
+    transform: scale(0.95); /* Efecto de hundido al tocar */
+}
 
-@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
-@keyframes rainbow_move { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-@keyframes blink { 50% { opacity: 0; } }
+#btn-click {
+    background: #00ff00;
+    color: black;
+    height: 70px; /* Súper alto para cliquear fácil */
+}
+
+.secondary-btn {
+    background: #555;
+    color: white;
+}
+
+#btn-rebirth {
+    background: #ff0000;
+    color: white;
+}
