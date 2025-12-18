@@ -3,46 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Steel a Teacher: Definitive Edition</title>
+    <title>Steel a Teacher</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
         <header id="hud">
-            <div class="stat-box">
-                <p>💰 <span id="money">25</span></p>
-                <p>📈 <span id="gps">0</span>/s</p>
-            </div>
-            <div class="stat-box">
-                <p>⭐ RB: <span id="rebirths">0</span></p>
-                <div id="admin_timer" class="timer-badge">ADMIN: READY</div>
-            </div>
+            <div class="stat">DINERO: $<span id="money">25</span></div>
+            <div class="stat">GPS: <span id="gps">0</span>/s</div>
+            <div id="admin_timer" class="stat">ADMIN: READY</div>
         </header>
 
         <main id="classroom">
             <div class="blackboard">
-                <h2 id="board-title">OFERTAS DEL DÍA</h2>
+                <h2>PROFESORES DISPONIBLES</h2>
                 <div id="offers_list"></div>
-            </div>
-            <div id="mission_alert" class="mission-box">
-                <b>MISIÓN:</b> <span id="mission_text">Cargando...</span>
             </div>
         </main>
 
         <section id="inventory_area">
-            <h3 class="base-title">PUPITRES DE TU BASE (<span id="slot_count">0/4</span>)</h3>
+            <h3>TU BASE (PUPITRES) <span id="slot_count">0/4</span></h3>
             <div id="base_grid" class="base-grid"></div>
         </section>
 
         <footer id="controls">
             <button id="btn-click" class="btn-action btn-steal">¡GENERAR CLIC!</button>
             <div class="btn-group">
-                <button onclick="tryRebirth()" class="btn-action btn-rebirth">RENACER ($10M)</button>
-                <button onclick="showStats()" class="btn-action btn-stats">STATS</button>
+                <button id="btn-rebirth" class="btn-action">RENACER (RB: <span id="rebirths">0</span>)</button>
             </div>
         </footer>
     </div>
     <script src="game.js"></script>
 </body>
-</html>
 </html>
