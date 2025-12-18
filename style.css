@@ -1,39 +1,63 @@
 :root {
-    --bg: #0f0f1b;
-    --card: #1e1e2e;
-    --neon-green: #00ff88;
-    --neon-blue: #00d4ff;
-    --neon-pink: #ff0077;
-    --text: #ffffff;
+    --chalk: #f0f0f0;
+    --board: #2d5a27;
+    --wood: #8b4513;
+    --gold: #ffd700;
+    --normal: #c8c8c8;
+    --dorado: #ffd700;
+    --diamante: #00e5ff;
 }
 
 body {
-    margin: 0; background: var(--bg); color: var(--text);
-    font-family: 'Segoe UI', sans-serif; overflow: hidden; height: 100vh;
+    margin: 0; background: #1a1a1a; color: white;
+    font-family: 'Arial', sans-serif; overflow: hidden; height: 100vh;
 }
 
 #app { display: flex; flex-direction: column; height: 100%; }
 
 #hud {
-    background: #000; padding: 15px; display: flex; justify-content: space-between;
-    border-bottom: 3px solid var(--neon-green); font-weight: bold;
+    background: var(--wood); padding: 10px; display: flex; 
+    justify-content: space-around; border-bottom: 4px solid #5d2e0a;
 }
 
-.highlight { color: var(--neon-green); text-shadow: 0 0 5px var(--neon-green); }
+.timer-badge { background: #000; padding: 4px 8px; border-radius: 5px; font-size: 12px; margin-top: 5px; }
 
-.admin-timer { color: var(--neon-pink); font-size: 0.8em; }
-
-/* Ofertas - Área Principal */
-#offers_area { flex: 3; overflow-y: auto; padding: 10px; background: rgba(255,255,255,0.05); }
+/* El Pizarrón */
+#classroom { flex: 3; padding: 10px; background: #3d3d3d; position: relative; }
+.blackboard {
+    background: var(--board); border: 8px solid var(--wood);
+    border-radius: 5px; height: 90%; padding: 10px; overflow-y: auto;
+}
 
 .offer-card {
-    background: var(--card); border: 1px solid var(--neon-blue);
-    margin-bottom: 8px; padding: 12px; border-radius: 10px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px; margin-bottom: 8px; padding: 10px;
     display: flex; justify-content: space-between; align-items: center;
 }
 
-/* Base - Slots */
-#inventory_area { flex: 2; padding: 10px; background: #000; border-top: 2px solid #333; }
+.rarity-tag { font-size: 10px; padding: 2px 5px; border-radius: 4px; font-weight: bold; }
+
+/* La Base */
+#inventory_area { flex: 2; background: #2a1b0a; padding: 10px; border-top: 4px solid var(--wood); }
+.base-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+
+.slot {
+    aspect-ratio: 1/1; background: #4a301d; border: 2px solid #5d2e0a;
+    border-radius: 6px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; font-size: 9px; text-align: center;
+}
+
+.slot.occupied { background: #5d2e0a; border-color: var(--gold); box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+
+/* Botones */
+#controls { padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+.btn-action {
+    border: none; border-radius: 8px; font-weight: bold; color: white; padding: 12px;
+}
+.btn-steal { background: #e74c3c; font-size: 20px; box-shadow: 0 4px #c0392b; }
+.btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.btn-rebirth { background: #9b59b6; box-shadow: 0 4px #8e44ad; }
+.btn-stats { background: #3498db; box-shadow: 0 4px #2980b9; }
 
 .base-grid {
     display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px;
