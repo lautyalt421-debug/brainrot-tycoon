@@ -1,17 +1,21 @@
-// Datos extraídos de tus archivos brainrots.py y rarities.py
+// DATOS EXTRAÍDOS DIRECTAMENTE DE TUS ARCHIVOS PYTHON
 const BRAINROTS = {
-    "Aguirrrrrre": {price: 27, gps: 2, prob: 90.0},
-    "Joaco kaly": {price: 10, gps: 1, prob: 75.0},
-    "Franquito": {price: 3300, gps: 50, prob: 45.0},
-    "Gogieri": {price: 20000, gps: 250, prob: 42.0},
-    "Piper": {price: 17500000, gps: 50000, prob: 1.5},
-    "Nikalacahsca": {price: 100000000000000, gps: 67000000000, prob: 0.07}
+    "Aguirrrrrre": {"price": 27, "gps": 2, "prob": 90.0},
+    "Joaco kaly": {"price": 10, "gps": 1, "prob": 75.0},
+    "Franquito": {"price": 3300, "gps": 50, "prob": 45.0},
+    "Gogieri": {"price": 20000, "gps": 250, "prob": 42.0},
+    "Sofia agustina": {"price": 70000, "gps": 750, "prob": 20.0},
+    "Donatello": {"price": 43000, "gps": 500, "prob": 15.0},
+    "Cassaandra": {"price": 110000, "gps": 1000, "prob": 18.0},
+    "Basileus": {"price": 70000, "gps": 750, "prob": 6.0},
+    "Lucarda": {"price": 145000, "gps": 1250, "prob": 4.0},
+    "Nikalacahsca": {"price": 100000000000000, "gps": 67000000000, "prob": 0.07}
 };
 
 const RARITIES = {
-    "Normal": {mult_price: 1.0, mult_gps: 1.0, color: "#c8c8c8", chance: 70},
-    "Dorado": {mult_price: 1.5, mult_gps: 1.5, color: "#ffd700", chance: 5},
-    "Diamante": {mult_price: 3.0, mult_gps: 3.0, color: "#00e5ff", chance: 2.5}
+    "Normal": { "mult_price": 1.0, "mult_gps": 1.0, "color": "#c8c8c8", "chance": 70 },
+    "Dorado": { "mult_price": 1.5, "mult_gps": 1.5, "color": "#ffd700", "chance": 5.0 },
+    "Diamante": { "mult_price": 3.0, "mult_gps": 3.0, "color": "#00e5ff", "chance": 2.5 }
 };
 
 let state = {
@@ -20,20 +24,115 @@ let state = {
     inventory: [],
     maxSlots: 4,
     rebirthLevel: 0,
-    lastAdminUse: 0,
-    adminActive: false
+    lastAdminUse: 0
 };
 
+// Función para iniciar el juego (Fix Crítico)
 function init() {
+    console.log("Iniciando Steel a Teacher...");
+    
+    // 1. Cargar datos si existen
+    const saved = localStorage.getItem('steelTeacherSave');
+    if(saved) state = JSON.parse(saved);
+
+    // 2. Iniciar bucles
     setInterval(tick, 1000);
+    
+    // 3. Render inicial
     spawnOffers();
     renderBase();
-    
-    document.getElementById('btn-click').addEventListener('click', () => {
+    updateUI();
+
+    // Evento de clic manual
+    document.getElementById('btn-click').onclick = () => {
         state.money += (1 + state.rebirthLevel);
         updateUI();
-    });
+        saveGame();
+    };
 }
+
+function tick() {
+    let currentGps = calculateGPS();
+    state.money += currentGps;
+    state.gps = currentGps;
+    updateUI();
+    updateAdminTimer();
+}
+
+function calculateGPS() {
+    let total = state.inventory.reduce((sum, item) => sum + item.gps, 0);
+    return total * (1 + (state.rebirthLevel * 0.1));
+}
+
+function spawnOffers() {
+    const container = document.getElementById('offers_list');
+    if(!container) return;
+    
+    container.innerHTML = "";
+    const names = Object.keys(BRAINROTS);
+    
+    for(let i=0; i<3; i++) {
+        const name = names[Math.floor(Math.random() * names.length)];
+        const rarity = rollRarity();
+        const data = BRAINROTS[name];
+        const fPrice = Math.floor(data.price * RARITIES[rarity].mult_price);
+        const fGps = Math.floor(data.gps * RARITIES[rarity].mult_gps);
+
+        container.innerHTML += `
+            <div class="offer-card">
+                <div>
+                    <span class="rarity-tag" style="background:${RARITIES[rarity].color}">${rarity}</span><br>
+                    <b>${name}</b><br>
+                    $${fPrice.toLocaleString()} | +${fGps} GPS
+                </div>
+                <button onclick="buyTeacher('${name}','${rarity}',${fPrice},${fGps})">ROBAR</button>
+            </div>`;
+    }
+}
+
+function rollRarity() {
+    let r = Math.random() * 100;
+    if (r < 2.5) return "Diamante";
+    if (r < 7.5) return "Dorado";
+    return "Normal";
+}
+
+window.buyTeacher = function(name, rarity, price, gps) {
+    if (state.money >= price && state.inventory.length < state.maxSlots) {
+        state.money -= price;
+        state.inventory.push({name, rarity, gps});
+        renderBase();
+        spawnOffers();
+        saveGame();
+    } else {
+        alert("Plata insuficiente o pupitres llenos");
+    }
+};
+
+function renderBase() {
+    const grid = document.getElementById('base_grid');
+    if(!grid) return;
+    grid.innerHTML = "";
+    for(let i=0; i < state.maxSlots; i++) {
+        const item = state.inventory[i];
+        grid.innerHTML += item 
+            ? `<div class="slot occupied"><b>${item.name}</b><br>${item.rarity}</div>`
+            : `<div class="slot">-------</div>`;
+    }
+}
+
+function saveGame() {
+    localStorage.setItem('steelTeacherSave', JSON.stringify(state));
+}
+
+function updateUI() {
+    if(document.getElementById('money')) document.getElementById('money').innerText = Math.floor(state.money).toLocaleString();
+    if(document.getElementById('gps')) document.getElementById('gps').innerText = state.gps.toLocaleString();
+    if(document.getElementById('rebirths')) document.getElementById('rebirths').innerText = state.rebirthLevel;
+}
+
+// Iniciar
+init();
 
 function tick() {
     // Incremento pasivo de dinero
