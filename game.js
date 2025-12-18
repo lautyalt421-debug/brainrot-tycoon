@@ -1,39 +1,154 @@
-let state = {
-    money: 0,
-    gps: 0,
-    rebirths: 0,
-    inventory: ["Aguirre"], // Empezás con Aguirre si o si
-    maxSlots: 10,
-    adminReady: true
+// Datos extraídos de tus archivos brainrots.py y rarities.py
+const BRAINROTS = {
+    "Aguirrrrrre": {price: 27, gps: 2, prob: 90.0},
+    "Joaco kaly": {price: 10, gps: 1, prob: 75.0},
+    "Franquito": {price: 3300, gps: 50, prob: 45.0},
+    "Gogieri": {price: 20000, gps: 250, prob: 42.0},
+    "Piper": {price: 17500000, gps: 50000, prob: 1.5},
+    "Nikalacahsca": {price: 100000000000000, gps: 67000000000, prob: 0.07}
 };
 
-const teachersData = [
-    { name: "Aguirre", cost: 15, gps: 1 },
-    { name: "García", cost: 100, gps: 5 },
-    { name: "Rodríguez", cost: 500, gps: 20 }
-];
+const RARITIES = {
+    "Normal": {mult_price: 1.0, mult_gps: 1.0, color: "#c8c8c8", chance: 70},
+    "Dorado": {mult_price: 1.5, mult_gps: 1.5, color: "#ffd700", chance: 5},
+    "Diamante": {mult_price: 3.0, mult_gps: 3.0, color: "#00e5ff", chance: 2.5}
+};
+
+let state = {
+    money: 25,
+    gps: 0,
+    inventory: [],
+    maxSlots: 4,
+    rebirthLevel: 0,
+    lastAdminUse: 0,
+    adminActive: false
+};
 
 function init() {
-    // Generación de dinero automática por segundo
-    setInterval(() => {
-        state.money += state.gps;
-        updateUI();
-    }, 1000);
-
-    renderOffers();
+    setInterval(tick, 1000);
+    spawnOffers();
     renderBase();
     
     document.getElementById('btn-click').addEventListener('click', () => {
-        state.money += (1 + state.rebirths);
+        state.money += (1 + state.rebirthLevel);
         updateUI();
     });
 }
 
-function renderOffers() {
+function tick() {
+    // Incremento pasivo de dinero
+    state.money += state.gps;
+    updateUI();
+    updateAdminTimer();
+}
+
+function spawnOffers() {
     const container = document.getElementById('offers_list');
-    container.innerHTML = teachersData.map(t => `
-        <div class="offer-card">
-            <div>
+    const names = Object.keys(BRAINROTS);
+    container.innerHTML = "";
+    
+    // Generamos 3 ofertas basadas en probabilidad
+    for(let i=0; i<3; i++) {
+        const name = names[Math.floor(Math.random() * names.length)];
+        const rarity = rollRarity();
+        const data = BRAINROTS[name];
+        const finalPrice = Math.floor(data.price * RARITIES[rarity].mult_price);
+        const finalGps = Math.floor(data.gps * RARITIES[rarity].mult_gps);
+
+        container.innerHTML += `
+            <div class="offer-card">
+                <div>
+                    <span class="rarity-tag" style="background:${RARITIES[rarity].color}">${rarity}</span><br>
+                    <b>${name}</b><br>
+                    $${finalPrice.toLocaleString()} | +${finalGps} GPS
+                </div>
+                <button onclick="buyTeacher('${name}','${rarity}',${finalPrice},${finalGps})">ROBAR</button>
+            </div>`;
+    }
+}
+
+function rollRarity() {
+    let r = Math.random() * 100;
+    if (r < 2.5) return "Diamante";
+    if (r < 7.5) return "Dorado";
+    return "Normal";
+}
+
+function buyTeacher(name, rarity, price, gps) {
+    if (state.money >= price && state.inventory.length < state.maxSlots) {
+        state.money -= price;
+        state.inventory.push({name, rarity, gps});
+        calculateGPS();
+        renderBase();
+        spawnOffers();
+    } else {
+        alert("Plata insuficiente o pupitres llenos");
+    }
+}
+
+function calculateGPS() {
+    let total = state.inventory.reduce((sum, item) => sum + item.gps, 0);
+    // Aplicar bono de rebirth (10% por nivel)
+    state.gps = total * (1 + (state.rebirthLevel * 0.1));
+}
+
+function updateAdminTimer() {
+    const btn = document.getElementById('admin_timer');
+    const now = Date.now();
+    const cooldown = 5 * 60 * 1000;
+    const diff = now - state.lastAdminUse;
+
+    if (diff > cooldown) {
+        btn.innerText = "ADMIN: READY";
+        btn.style.color = "#00ff00";
+        btn.onclick = () => {
+            state.money += 10000;
+            state.lastAdminUse = Date.now();
+            alert("ADMIN ABUSE: +$10,000");
+        };
+    } else {
+        const remaining = Math.ceil((cooldown - diff) / 1000);
+        btn.innerText = `ADMIN: ${remaining}s`;
+        btn.style.color = "#ff4444";
+        btn.onclick = null;
+    }
+}
+
+function renderBase() {
+    const grid = document.getElementById('base_grid');
+    grid.innerHTML = "";
+    document.getElementById('slot_count').innerText = `${state.inventory.length}/${state.maxSlots}`;
+    
+    for(let i=0; i < state.maxSlots; i++) {
+        const item = state.inventory[i];
+        grid.innerHTML += item 
+            ? `<div class="slot occupied"><b>${item.name}</b><br>${item.rarity}</div>`
+            : `<div class="slot">-------</div>`;
+    }
+}
+
+function tryRebirth() {
+    const cost = 10000000;
+    if (state.money >= cost) {
+        state.rebirthLevel++;
+        state.money = 25;
+        state.inventory = [];
+        state.maxSlots += 2; // Bono de slots por rebirth
+        calculateGPS();
+        renderBase();
+        alert("¡RENACISTE! Ahora ganas más dinero y tenés más pupitres.");
+    } else {
+        alert("Faltan $" + (cost - state.money).toLocaleString());
+    }
+}
+
+function updateUI() {
+    document.getElementById('money').innerText = Math.floor(state.money).toLocaleString();
+    document.getElementById('gps').innerText = state.gps.toLocaleString();
+    document.getElementById('rebirths').innerText = state.rebirthLevel;
+}
+
+init();
                 <strong>${t.name}</strong><br>
                 Gen: $${t.gps}/s | Costo: $${t.cost}
             </div>
