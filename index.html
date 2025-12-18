@@ -3,32 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Brainrot Tycoon Mobile</title>
+    <title>Steel a Teacher</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
         <header id="hud">
-            <div class="stat">DINERO: $<span id="money">0</span></div>
-            <div class="stat">GPS: <span id="gps">0</span>/s</div>
-            <div class="stat">SLOTS: <span id="slots">0</span>/10</div>
-            <div class="stat">RB: <span id="rebirths">0</span></div>
-            <div id="admin_timer" style="display:none; color: #00ff00; font-weight: bold;"></div>
+            <div class="stat">DINERO: <span id="money" class="highlight">$0</span></div>
+            <div class="stat">GPS: <span id="gps" class="highlight">0</span>/s</div>
+            <div id="admin_timer" class="admin-timer">ADMIN: READY</div>
         </header>
 
         <main id="offers_area">
-            </main>
+            <h2 class="section-title">PROFESORES DISPONIBLES</h2>
+            <div id="offers_list"></div>
+        </main>
 
         <section id="inventory_area">
-            </section>
+            <h2 class="section-title">TU BASE (SLOTS)</h2>
+            <div id="base_grid" class="base-grid">
+                </div>
+        </section>
 
         <footer id="controls">
-            <button id="btn-click" class="main-btn">¡GENERAR DINERO!</button>
-            <button id="btn-rebirth" class="secondary-btn">REBIRTH</button>
-        </footer >
+            <button id="btn-click" class="btn-main">¡ROBAR PROFESOR!</button>
+            <div class="footer-row">
+                <button id="btn-rebirth" class="btn-sub">PRESTIGIO (RB: <span id="rebirths">0</span>)</button>
+            </div>
+        </footer>
     </div>
-
     <script src="game.js"></script>
 </body>
-</html>
 </html>
