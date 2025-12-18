@@ -2,36 +2,33 @@
 <html lang="es-AR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, orientation=landscape">
-    <title>Brainrot Tycoon v1.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Brainrot Tycoon Mobile</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
         <header id="hud">
-            <div class="stat">DINERO: <span id="money">$0</span></div>
-            <div class="stat">GPS: <span id="gps">+0/s</span></div>
-            <div class="stat">SLOTS: <span id="slots">0/4</span></div>
-            <div class="stat">RB: <span id="rebirth_level">0</span></div>
-            <div id="admin_timer" class="hidden">ADMIN ABUSE</div>
+            <div class="stat">DINERO: $<span id="money">0</span></div>
+            <div class="stat">GPS: <span id="gps">0</span>/s</div>
+            <div class="stat">SLOTS: <span id="slots">0</span>/10</div>
+            <div class="stat">RB: <span id="rebirths">0</span></div>
+            <div id="admin_timer" style="display:none; color: #00ff00; font-weight: bold;"></div>
         </header>
 
-        <main id="offers_area"></main>
+        <main id="offers_area">
+            </main>
 
         <section id="inventory_area">
-            <div id="inventory_list"></div>
-        </section>
+            </section>
 
         <footer id="controls">
-            <button id="btn_rebirth" onclick="game.doRebirth()">REBIRTH</button>
-            <button id="btn_slot" onclick="game.buySlot()">+SLOT</button>
-            <button id="btn_upgrade" onclick="game.upgradeGen()">UPGRADE GEN</button>
-            <button id="btn_steal" onclick="game.stealOffer()">ROBAR</button>
-        </footer>
-
-        <audio id="audio_bg" loop></audio>
-        <audio id="audio_admin" loop></audio>
+            <button id="btn-click" class="main-btn">¡GENERAR DINERO!</button>
+            <button id="btn-rebirth" class="secondary-btn">REBIRTH</button>
+        </footer >
     </div>
+
     <script src="game.js"></script>
 </body>
+</html>
 </html>
