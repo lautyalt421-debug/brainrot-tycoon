@@ -1,39 +1,84 @@
-class BrainrotTycoon {
-    constructor() {
-        // Constantes Técnicas (Sección 7)
-        this.START_MONEY = 25;
-        this.START_SLOTS = 4;
-        this.OFFER_INTERVAL = 4000;
-        this.OFFER_WAIT_TIME = 6000;
-        this.MAX_OFFERS = 3;
-        this.PRICE_INFLATION = 1.35;
+let state = {
+    money: 0,
+    gps: 0,
+    rebirths: 0,
+    inventory: ["Aguirre"], // Empezás con Aguirre si o si
+    maxSlots: 10,
+    adminReady: true
+};
 
-        // Estado
-        this.money = this.START_MONEY;
-        this.inventory = [];
-        this.maxSlots = this.START_SLOTS;
-        this.rebirthLevel = 0;
-        this.genUpgradeLevel = 0;
-        this.isAdminActive = false;
-        this.adminStartTime = 0;
-        this.adminDuration = 0;
+const teachersData = [
+    { name: "Aguirre", cost: 15, gps: 1 },
+    { name: "García", cost: 100, gps: 5 },
+    { name: "Rodríguez", cost: 500, gps: 20 }
+];
 
-        this.offers = [];
-        this.database = null;
-        this.rarities = null;
+function init() {
+    // Generación de dinero automática por segundo
+    setInterval(() => {
+        state.money += state.gps;
+        updateUI();
+    }, 1000);
 
-        this.init();
+    renderOffers();
+    renderBase();
+    
+    document.getElementById('btn-click').addEventListener('click', () => {
+        state.money += (1 + state.rebirths);
+        updateUI();
+    });
+}
+
+function renderOffers() {
+    const container = document.getElementById('offers_list');
+    container.innerHTML = teachersData.map(t => `
+        <div class="offer-card">
+            <div>
+                <strong>${t.name}</strong><br>
+                Gen: $${t.gps}/s | Costo: $${t.cost}
+            </div>
+            <button onclick="buyTeacher('${t.name}', ${t.cost}, ${t.gps})">ROBAR</button>
+        </div>
+    `).join('');
+}
+
+function renderBase() {
+    const grid = document.getElementById('base_grid');
+    grid.innerHTML = "";
+    for(let i=0; i < state.maxSlots; i++) {
+        const name = state.inventory[i] || "-----------";
+        const isOccupied = state.inventory[i] ? "occupied" : "";
+        grid.innerHTML += `<div class="slot ${isOccupied}">${name}</div>`;
     }
+}
 
-    async init() {
-        try {
-            const [brRes, rarRes] = await Promise.all([
-                fetch('data/brainrots.json'),
-                fetch('data/rarities.json')
-            ]);
-            this.database = (await brRes.json()).brainrots;
-            this.rarities = await rarRes.json();
-            
+function buyTeacher(name, cost, gps) {
+    if (state.money >= cost && state.inventory.length < state.maxSlots) {
+        state.money -= cost;
+        state.inventory.push(name);
+        calculateGPS();
+        renderBase();
+        updateUI();
+    } else {
+        alert("Sin dinero o base llena!");
+    }
+}
+
+function calculateGPS() {
+    state.gps = state.inventory.reduce((sum, name) => {
+        const t = teachersData.find(td => td.name === name);
+        return sum + (t ? t.gps : 0);
+    }, 0);
+}
+
+function updateUI() {
+    document.getElementById('money').innerText = Math.floor(state.money);
+    document.getElementById('gps').innerText = state.gps;
+    document.getElementById('rebirths').innerText = state.rebirths;
+}
+
+// Iniciar juego
+init();
             this.loadGame();
             this.setupAudio();
             this.startLoops();
