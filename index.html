@@ -3,35 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Steel a Teacher</title>
+    <title>Steel a Teacher: Definitive Edition</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
         <header id="hud">
-            <div class="stat">DINERO: <span id="money" class="highlight">$0</span></div>
-            <div class="stat">GPS: <span id="gps" class="highlight">0</span>/s</div>
-            <div id="admin_timer" class="admin-timer">ADMIN: READY</div>
+            <div class="stat-box">
+                <p>💰 <span id="money">25</span></p>
+                <p>📈 <span id="gps">0</span>/s</p>
+            </div>
+            <div class="stat-box">
+                <p>⭐ RB: <span id="rebirths">0</span></p>
+                <div id="admin_timer" class="timer-badge">ADMIN: READY</div>
+            </div>
         </header>
 
-        <main id="offers_area">
-            <h2 class="section-title">PROFESORES DISPONIBLES</h2>
-            <div id="offers_list"></div>
+        <main id="classroom">
+            <div class="blackboard">
+                <h2 id="board-title">OFERTAS DEL DÍA</h2>
+                <div id="offers_list"></div>
+            </div>
+            <div id="mission_alert" class="mission-box">
+                <b>MISIÓN:</b> <span id="mission_text">Cargando...</span>
+            </div>
         </main>
 
         <section id="inventory_area">
-            <h2 class="section-title">TU BASE (SLOTS)</h2>
-            <div id="base_grid" class="base-grid">
-                </div>
+            <h3 class="base-title">PUPITRES DE TU BASE (<span id="slot_count">0/4</span>)</h3>
+            <div id="base_grid" class="base-grid"></div>
         </section>
 
         <footer id="controls">
-            <button id="btn-click" class="btn-main">¡ROBAR PROFESOR!</button>
-            <div class="footer-row">
-                <button id="btn-rebirth" class="btn-sub">PRESTIGIO (RB: <span id="rebirths">0</span>)</button>
+            <button id="btn-click" class="btn-action btn-steal">¡GENERAR CLIC!</button>
+            <div class="btn-group">
+                <button onclick="tryRebirth()" class="btn-action btn-rebirth">RENACER ($10M)</button>
+                <button onclick="showStats()" class="btn-action btn-stats">STATS</button>
             </div>
         </footer>
     </div>
     <script src="game.js"></script>
 </body>
+</html>
 </html>
